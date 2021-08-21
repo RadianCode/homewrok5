@@ -30,7 +30,7 @@ enum windowStatus {
 // 2. Создать расширения для протокола «Car» и реализовать в них методы конкретных действий с автомобилем: открыть/закрыть окно, запустить/заглушить двигатель и т.д. (по одному методу на действие, реализовывать следует только те действия, реализация которых общая для всех автомобилей).
 
 extension CarProtocol {
-     mutating func actionWindow(windowStatus: windowStatus) {
+    mutating func actionWindow(windowStatus: windowStatus) {
         if windowStatus == .dowm {
             self.windowStatus = .dowm
             print("Окна открыты")
@@ -76,28 +76,25 @@ class sportCar: CarProtocol {
     
 }
 
-var mazda: sportCar = sportCar(markAuto: "mazda", country: "Japan", engineStatus: .off, windowStatus: .dowm, maxSpeed: 300)
-
-mazda.actionWindow(windowStatus: .up)
-mazda.actionEngine(engineStatus: .on)
-
 class trunkCar: CarProtocol {
     
     var markAuto: String
     var country: String
     var engineStatus: engineStatus
     var windowStatus: windowStatus
+    var cistern: Int
     
     func doSome() {
         print("Something")
     }
     
-    init(markAuto: String, country: String, engineStatus: engineStatus, windowStatus: windowStatus) {
+    init(markAuto: String, country: String, engineStatus: engineStatus, windowStatus: windowStatus, cistern: Int) {
         
         self.markAuto = markAuto
         self.country = country
         self.engineStatus = engineStatus
         self.windowStatus = windowStatus
+        self.cistern = cistern
     }
     
 }
@@ -105,7 +102,31 @@ class trunkCar: CarProtocol {
 // 4. Для каждого класса написать расширение, имплементирующее протокол «CustomStringConvertible».
 
 
+extension trunkCar: CustomStringConvertible {
+    
+    var description: String {
+        return "Грузовое авто марки \(markAuto) из страны \(country) имеет объем цистерны \(cistern) литров"
+    }
+}
+
+extension sportCar: CustomStringConvertible {
+    var description: String {
+        return "Автомобиль \(markAuto) из страны \(country) едет со скоростью \(maxSpeed) km."
+        
+    }
+}
+
 // 5. Создать несколько объектов каждого класса. Применить к ним различные действия.
+
+var mazda: sportCar = sportCar(markAuto: "mazda", country: "Japan", engineStatus: .off, windowStatus: .dowm, maxSpeed: 300)
+
+var honda: trunkCar = trunkCar(markAuto: "Honda", country: "Japan", engineStatus: .on, windowStatus: .up, cistern: 400)
+
+mazda.actionWindow(windowStatus: .up)
+mazda.actionEngine(engineStatus: .on)
+honda.actionEngine(engineStatus: .on)
 
 // 6. Вывести сами объекты в консоль.
 
+print(mazda)
+print(honda)
